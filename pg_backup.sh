@@ -17,7 +17,6 @@ log() {
 
 log_from_tmp() {
   cat tmp.txt >> $SCRIPTPATH/pg_backup.log
-  rm tmp.txt
 }
 
 backup_to_aws() {
@@ -118,5 +117,7 @@ FINAL_BACKUP_FILE="$BACKUP_DIR"/"$TIME"
 backup_to_local
 backup_to_aws
 delete_backups
+
+rm tmp.txt
 
 log "Backup complete\n"
