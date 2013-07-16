@@ -23,7 +23,7 @@ backup_to_aws() {
   if [ "$AWS_ACCESS_KEY" ] && [ "$AWS_SECRET_KEY_PATH" ] && [ "$AWS_BUCKET_PATH" ]; then
     log "Backupping to AWS"
 
-    ./s3/s3-put -k $AWS_ACCESS_KEY -s $AWS_SECRET_KEY_PATH -S -T "$FINAL_BACKUP_FILE".sql.gz "$AWS_BUCKET_PATH"/"$TIME".sql.gz 2> tmp.txt
+    $SCRIPTPATH/s3/s3-put -k $AWS_ACCESS_KEY -s $AWS_SECRET_KEY_PATH -S -T "$FINAL_BACKUP_FILE".sql.gz "$AWS_BUCKET_PATH"/"$TIME".sql.gz 2> tmp.txt
     ERROR_SIZE=$(ls -al tmp.txt | awk '{ print $5 }')
 
     if [ $ERROR_SIZE -ne 0 ]; then
@@ -42,7 +42,7 @@ delete_aws_backups() {
   do
     FILEPATH=$AWS_BUCKET_PATH/${f##*/}
     log "Deleting file $FILEPATH from AWS"
-    ./s3/s3-delete -k $AWS_ACCESS_KEY -s $AWS_SECRET_KEY_PATH -S $FILEPATH 2> tmp.txt
+    $SCRIPTPATH/s3/s3-delete -k $AWS_ACCESS_KEY -s $AWS_SECRET_KEY_PATH -S $FILEPATH 2> tmp.txt
     ERROR_SIZE=$(ls -al tmp.txt | awk '{ print $5 }')
     if [ $ERROR_SIZE -ne 0 ]; then
       log_from_tmp
