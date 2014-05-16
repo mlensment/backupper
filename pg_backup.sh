@@ -19,37 +19,6 @@ log_from_tmp() {
   cat tmp.txt >> $SCRIPTPATH/pg_backup.log
 }
 
-backup_to_aws() {
-  if [ "$AWS_ACCESS_KEY" ] && [ "$AWS_SECRET_KEY_PATH" ] && [ "$AWS_BUCKET_PATH" ]; then
-    log "Backupping to AWS"
-
-    $SCRIPTPATH/s3/s3-put -k $AWS_ACCESS_KEY -s $AWS_SECRET_KEY_PATH -S -T "$FINAL_BACKUP_FILE".sql.gz "$AWS_BUCKET_PATH"/"$TIME".sql.gz 2> tmp.txt
-    ERROR_SIZE=$(ls -al tmp.txt | awk '{ print $5 }')
-
-    if [ $ERROR_SIZE -ne 0 ]; then
-      log_from_tmp
-      log "\n[!!WARNING!!] Backupping to AWS failed."
-    else
-      log "Backupped to AWS $AWS_BUCKET_PATH/$TIME.sql.gz"
-    fi;
-  fi;
-}
-
-delete_aws_backups() {
-  log "Deleting AWS backups older than $DAYS_TO_KEEP days"
-
-  for f in $(find $BACKUP_DIR/* -mtime +$DAYS_TO_KEEP)
-  do
-    FILEPATH=$AWS_BUCKET_PATH/${f##*/}
-    log "Deleting file $FILEPATH from AWS"
-    $SCRIPTPATH/s3/s3-delete -k $AWS_ACCESS_KEY -s $AWS_SECRET_KEY_PATH -S $FILEPATH 2> tmp.txt
-    ERROR_SIZE=$(ls -al tmp.txt | awk '{ print $5 }')
-    if [ $ERROR_SIZE -ne 0 ]; then
-      log_from_tmp
-      log "\n[!!WARNING!!] Deleting backup $FILEPATH from AWS failed."
-    fi;
-  done
-}
 
 backup_to_local() {
   log "Backupping to local"
@@ -78,7 +47,6 @@ delete_local_backups() {
 }
 
 delete_backups() {
-  delete_aws_backups
   delete_local_backups
 }
 
@@ -115,7 +83,6 @@ FINAL_BACKUP_FILE="$BACKUP_DIR"/"$TIME"
 
 # Perform backup
 backup_to_local
-backup_to_aws
 delete_backups
 
 rm tmp.txt
