@@ -5,21 +5,24 @@
 ## BACKUPPER CONFIG ##
 ######################
 
-# Optional username to connect to database as.  Will default to "postgres" if none specified.
-HOSTNAME=localhost
+#Where is the database
+HOSTNAME=
 
-USERNAME=blog_v4
+#Username of the db
+USERNAME=
 
 #Password
-PGPASSWORD=blog_v4_pwd
+PGPASSWORD=
 
 # Schema
-SCHEMA=public
+SCHEMA=
 
 # Database
-DATABASE=blog_v4_development
+DATABASE=
 
-### SCRIPT ###
+######################
+## BACKUPPER SCRIPT ##
+######################
 
 log() {
   echo -e $1

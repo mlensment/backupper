@@ -1,9 +1,7 @@
 Shell script for backing up PostgreSQL databases
 
-1. Clone to desired directory
-2. Modify pg_backup.config to your needs
-3. Add pg_backup.sh to crontab
+Here lives the stripped version of backupper script.
 
-  Execute `crontab -e`
-
-  Append `@daily /path/to/pg_backup.sh > /dev/null`
+1. `wget https://raw.githubusercontent.com/mlensment/backupper/simple/pg_backup.sh && chmod +x pg_backup.sh`
+2. Modify pg_backup.sh to your needs
+3. `./pg_backup.sh` will create the backup to your current directory
