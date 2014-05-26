@@ -1,0 +1,5 @@
+#!/bin/sh
+psql -h localhost -U martin -d ${1}_development -t -c "SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE datname = current_database() AND procpid <> pg_backend_pid();"
+dropdb ${1}_development -h localhost -U martin
+createdb -O ${1} ${1}_development -h localhost -U martin
+gunzip -c $2 | psql -h localhost -U martin -d ${1}_development
