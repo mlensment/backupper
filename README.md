@@ -10,5 +10,5 @@
 
 ## If you want something less heavy
 
-* If you don't want to use AWS backups, try (this)[https://github.com/mlensment/backupper/tree/local-only]
-* If you want to do just one backup, try (this)[https://github.com/mlensment/backupper/tree/simple]
+* If you don't want to use AWS backups, try [this](https://github.com/mlensment/backupper/tree/local-only)
+* If you want to do just one backup, try [this](https://github.com/mlensment/backupper/tree/simple)
